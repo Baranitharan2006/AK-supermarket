@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Supermarket</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">AK Supermarket</h1>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+        <div class="container">
+            <button class="tab-btn active" data-tab="shopping">Shopping</button>
+            <button class="tab-btn shop-owner-only" data-tab="manage-menu" id="manageMenuTab" style="display: none;">Manage Menu</button>
+            <button class="tab-btn shop-owner-only" data-tab="sales-report" id="salesReportTab" style="display: none;">Sales Report</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Shopping Section -->
+            <section id="shopping" class="tab-content active">
+                <div class="shopping-layout">
+                    <!-- Products Grid -->
+                    <div class="products-section">
+                        <h2>Products</h2>
+                        <div class="category-filter">
+                            <button class="filter-btn active" data-category="all">All</button>
+                            <button class="filter-btn" data-category="Fresh Vegetables">Fresh Vegetables</button>
+                            <button class="filter-btn" data-category="Rice">Rice</button>
+                            <button class="filter-btn" data-category="Sunflower Oil">Sunflower Oil</button>
+                            <button class="filter-btn" data-category="Milk">Milk</button>
+                            <button class="filter-btn" data-category="Eggs">Eggs</button>
+                            <button class="filter-btn" data-category="Masala Powders">Masala Powders</button>
+                            <button class="filter-btn" data-category="Shampoo">Shampoo</button>
+                            <button class="filter-btn" data-category="Toothpaste">Toothpaste</button>
+                            <button class="filter-btn" data-category="Garam Masala">Garam Masala</button>
+                        </div>
+                        <div class="products-grid" id="productsGrid">
+                            <!-- Products will be dynamically loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Shopping Cart -->
+                    <div class="cart-section">
+                        <div class="customer-info-header">
+                            <h2>Shopping Cart</h2>
+                            <div class="customer-display">
+                                <span id="customerNameDisplay"></span>
+                                <button class="btn-logout" id="logoutBtn" onclick="logout()">Logout</button>
+                            </div>
+                        </div>
+                        <div class="delivery-option">
+                            <label class="delivery-checkbox">
+                                <input type="checkbox" id="homeDelivery">
+                                <span>Home Delivery</span>
+                            </label>
+                            <div id="deliveryAddress" style="display: none; margin-top: 10px; padding: 10px; background: #f8f8f8; border-radius: 5px;">
+                                <strong>Delivery Address:</strong>
+                                <p id="deliveryAddressText"></p>
+                            </div>
+                        </div>
+                        <div class="cart-items" id="cartItems">
+                            <p class="empty-cart">Your cart is empty</p>
+                        </div>
+                        <div class="cart-summary">
+                            <div class="cart-total">
+                                <strong>Total: ₹<span id="cartTotal">0.00</span></strong>
+                                <div id="deliveryCharge" style="display: none; font-size: 0.9rem; color: #666; margin-top: 5px;">
+                                    Delivery Charge: ₹<span id="deliveryChargeAmount">0.00</span>
+                                </div>
+                                <div id="grandTotal" style="display: none; font-size: 1.1rem; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">
+                                    <strong>Grand Total: ₹<span id="grandTotalAmount">0.00</span></strong>
+                                </div>
+                            </div>
+                            <div class="cart-actions">
+                                <button class="btn btn-secondary" id="clearCart">Clear Cart</button>
+                                <button class="btn btn-primary" id="payNow">Pay Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Manage Menu Section -->
+            <section id="manage-menu" class="tab-content">
+                <h2>Manage Menu</h2>
+                <div class="menu-management">
+                    <div class="add-item-form">
+                        <h3>Add New Item</h3>
+                        <form id="addItemForm">
+                            <div class="form-group">
+                                <label for="itemName">Product Name</label>
+                                <input type="text" id="itemName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="itemCategory">Category</label>
+                                <select id="itemCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Fresh Vegetables">Fresh Vegetables</option>
+                                    <option value="Rice">Rice</option>
+                                    <option value="Sunflower Oil">Sunflower Oil</option>
+                                    <option value="Milk">Milk</option>
+                                    <option value="Eggs">Eggs</option>
+                                    <option value="Masala Powders">Masala Powders</option>
+                                    <option value="Shampoo">Shampoo</option>
+                                    <option value="Toothpaste">Toothpaste</option>
+                                    <option value="Garam Masala">Garam Masala</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="itemPrice">Price (₹)</label>
+                                <input type="number" id="itemPrice" step="0.01" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="itemImage">Product Image</label>
+                                <input type="file" id="itemImage" accept="image/*" onchange="previewImage(event)">
+                                <small style="color: #666; display: block; margin-top: 5px;">Select image from your downloads or computer</small>
+                                <div id="imagePreview" style="margin-top: 10px; display: none;">
+                                    <img id="previewImg" src="" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 8px; border: 1px solid #ddd;">
+                                    <button type="button" class="btn btn-secondary" onclick="clearImagePreview()" style="margin-top: 5px; padding: 5px 10px; font-size: 0.85rem;">Remove Image</button>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 10px;">
+                                <label for="itemImageUrl" style="font-size: 0.9rem; color: #666;">Or enter Image URL (optional)</label>
+                                <input type="text" id="itemImageUrl" placeholder="Enter image URL if not uploading file">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Item</button>
+                            <button type="button" class="btn btn-secondary" id="cancelEdit" style="display:none;">Cancel</button>
+                        </form>
+                    </div>
+
+                    <div class="items-list">
+                        <h3>Current Menu Items</h3>
+                        <div class="items-grid" id="itemsList">
+                            <!-- Items will be dynamically loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sales Report Section -->
+            <section id="sales-report" class="tab-content">
+                <h2>Monthly Sales Report</h2>
+                <div class="report-filters">
+                    <div class="form-group">
+                        <label for="reportMonth">Month</label>
+                        <input type="month" id="reportMonth">
+                    </div>
+                    <button class="btn btn-primary" id="filterReport">Filter</button>
+                    <button class="btn btn-secondary" id="resetReport">Reset</button>
+                </div>
+                <div class="report-summary">
+                    <div class="summary-card">
+                        <h3>Total Sales</h3>
+                        <p class="summary-value">₹<span id="totalSales">0.00</span></p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total Transactions</h3>
+                        <p class="summary-value"><span id="totalTransactions">0</span></p>
+                    </div>
+                </div>
+                <div class="report-table-container">
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Items & Customer</th>
+                                <th>Total Amount</th>
+                                <th>Transaction ID</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportTableBody">
+                            <!-- Report data will be dynamically loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- QR Code Modal -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Scan to Pay</h2>
+            <div id="qrcode"></div>
+            <p class="payment-amount">Amount: ₹<span id="paymentAmount">0.00</span></p>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="confirmPayment">Confirm Payment</button>
+                <button class="btn btn-secondary" id="printBill">Print Bill</button>
+                <button class="btn btn-secondary" id="cancelPayment">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bill Print Section (Hidden) -->
+    <div id="billPrint" class="bill-print">
+        <div class="bill-content">
+            <div class="bill-header">
+                <h1>AK Supermarket</h1>
+                <p>Thank you for your purchase!</p>
+            </div>
+            <div class="bill-info">
+                <p><strong>Date:</strong> <span id="billDate"></span></p>
+                <p><strong>Transaction ID:</strong> <span id="billTransactionId"></span></p>
+            </div>
+            <table class="bill-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="billItems">
+                    <!-- Bill items will be dynamically loaded here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"><strong>Grand Total</strong></td>
+                        <td><strong>₹<span id="billTotal"></span></strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="bill-footer">
+                <p>Thank you for shopping with us!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

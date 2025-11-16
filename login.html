@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Supermarket - Sign In</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <!-- Logo -->
+        <div class="login-logo">
+            <h1>AK Supermarket</h1>
+        </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="login-box active">
+                <h2>Sign in</h2>
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label for="loginPhone">Phone number</label>
+                        <input type="tel" id="loginPhone" placeholder="Enter your phone number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="admin-checkbox">
+                            <input type="checkbox" id="isShopOwner">
+                            <span>Shop Owner / Admin</span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-amazon btn-full">Sign in</button>
+                </form>
+                <div class="login-divider">
+                    <span>New to AK Supermarket?</span>
+                </div>
+                <button type="button" class="btn-amazon-secondary btn-full" onclick="showRegisterForm()">Create your AK Supermarket account</button>
+            </div>
+
+        <!-- Registration Form -->
+        <div id="registerForm" class="login-box">
+            <h2>Create account</h2>
+            <form id="registerFormElement">
+                <div class="form-group">
+                    <label for="regName">Your name</label>
+                    <input type="text" id="regName" placeholder="First and last name" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPhone">Phone number</label>
+                    <input type="tel" id="regPhone" placeholder="Mobile number" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" placeholder="At least 4 characters" required minlength="4">
+                    <small class="form-hint">Passwords must be at least 4 characters.</small>
+                </div>
+                <div class="form-group">
+                    <label for="regAddress">Delivery address</label>
+                    <textarea id="regAddress" placeholder="Enter your complete delivery address" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn-amazon btn-full">Continue</button>
+            </form>
+            <div class="login-divider">
+                <span>Already have an account?</span>
+            </div>
+            <button type="button" class="btn-amazon-secondary btn-full" onclick="showLoginForm()">Sign in</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="login-footer">
+            <div class="footer-links">
+                <a href="#">Conditions of Use</a>
+                <a href="#">Privacy Notice</a>
+                <a href="#">Help</a>
+            </div>
+            <p class="footer-copyright">© 2024, AK Supermarket, Inc. or its affiliates</p>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>
+
